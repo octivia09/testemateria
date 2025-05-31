@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 
 # Título do app
 st.set_page_config(page_title="Formulário de Dificuldades", layout="centered")
@@ -36,15 +35,9 @@ if st.session_state['dados']:
     st.subheader("📋 Dados recebidos")
     st.dataframe(df, use_container_width=True)
 
-    # Gráfico de barras com quantitativo por matéria
+    # Gráfico de barras com quantitativo por matéria (usando Streamlit nativo)
     st.subheader("📊 Alunos com dificuldade por matéria")
-    grafico = px.bar(
-        df.groupby("Matéria").size().reset_index(name='Quantidade'),
-        x='Matéria',
-        y='Quantidade',
-        title="Distribuição de dificuldades por matéria",
-        color='Matéria'
-    )
-    st.plotly_chart(grafico, use_container_width=True)
+    contagem = df['Matéria'].value_counts()
+    st.bar_chart(contagem)
 else:
     st.info("Nenhum dado enviado ainda. Preencha o formulário acima para começar.")
